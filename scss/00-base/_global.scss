@@ -1,0 +1,87 @@
+// All Elements
+// ------------------------------------------
+:root {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: $global-font-size;
+  line-height: $global-lineheight;
+  color: $c-body;
+  font-family: $f-body;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// Links
+// ------------------------------------------
+a {
+  @include focus;
+
+  color: $c-link;
+}
+
+// Media
+//------------------------------------------
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// Headings
+//------------------------------------------
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: $sp1;
+  font-family: $f-header;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+h1,
+.h1,
+%h1 {
+  font-size: rem-calc($h1);
+}
+
+h2,
+.h2,
+%h2 {
+  font-size: rem-calc($h2);
+}
+
+h3,
+.h3,
+%h3 {
+  font-size: rem-calc($h3);
+}
+
+h4,
+.h4,
+%h4 {
+  font-size: rem-calc($h4);
+}
+
+h5,
+.h5,
+%h5 {
+  font-size: rem-calc($h5);
+}
+
+h6,
+.h6,
+%h6 {
+  font-size: rem-calc($h6);
+}
+
+// General
+// ------------------------------------------
+small {
+  @include body-small;
+}

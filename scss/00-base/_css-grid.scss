@@ -1,0 +1,38 @@
+// CSS grid
+// Creates a 12 column grid parent for 1170px, 30px gutter
+// When you need a grid to be centered
+@mixin display-grid {
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 5em)) 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  @include bp(desktop) {
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+  }
+
+  > * {
+    grid-column: 2/14;
+  }
+}
+
+// When you need a grid inside of a grid
+@mixin display-grid-tight {
+  @include display-grid;
+  grid-template-columns: repeat(12, minmax(auto, 5em));
+
+  > * {
+    grid-column: 1/-1;
+  }
+}
+
+// Remove that grid
+@mixin remove-grid {
+  display: block;
+
+  .layout-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

@@ -1,0 +1,35 @@
+// Font faces
+// -- Define any font faces for locally downloaded fonts here.
+//    Don't define faces for fonts from third-parties, such as Typekit. They
+//    already do this part.
+
+// Example:
+// @font-face {
+//   font-family: 'Rubik Black';
+//   src: url('../fonts/Rubik-Black.ttf') format('truetype');
+// }
+
+// Base fonts
+// -- Change to match design requirements. Call them whatever you want. Add
+//    more as needed.
+$f-primary: 'Arial', sans-serif;
+$f-secondary: 'Helvetica', sans-serif;
+
+// Font Abstractions
+// -- Configure which fonts to use for elements across the site.
+$f-header: $f-primary;
+$f-body: $f-secondary;
+
+// Font size defaults
+// -- Configure defaults that are set on the :root element.
+$global-font-size: 16px; // Sets the value of 1rem
+$global-lineheight: 1.5;
+
+// Header Sizes
+// -- Set values as though they were pixels. These are passed to rem-calc().
+$h1: 36;
+$h2: 24;
+$h3: 24;
+$h4: 18;
+$h5: 18;
+$h6: 18;

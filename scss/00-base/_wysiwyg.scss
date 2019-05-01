@@ -1,0 +1,75 @@
+// WYSIWYG
+// -- Configure styles for WYSIWYG text.
+
+@mixin wysiwyg {
+  @include clearfix;
+
+  p {
+    margin-top: 0;
+    margin-bottom: $sp2;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  img {
+    width: auto;
+  }
+
+  hr {
+    border: 0;
+    border-bottom: 1px solid $c-ui;
+    margin: $sp3;
+    clear: both;
+  }
+
+  blockquote {
+    margin: $sp3;
+    padding: 0 $sp3;
+    margin-left: 0;
+    border-left: rem-calc(10) solid $c-ui;
+  }
+
+  ul,
+  ol {
+    margin: $sp3;
+    padding: 0;
+
+    ul,
+    ol {
+      margin: $sp1 $sp2;
+    }
+  }
+
+  li {
+    margin-bottom: $sp1;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  dt {
+    font-family: $f-body;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $c-ui;
+    }
+  }
+
+  th {
+    text-align: left;
+    padding: rem-calc(10);
+  }
+
+  td {
+    padding: rem-calc(5 10);
+  }
+}

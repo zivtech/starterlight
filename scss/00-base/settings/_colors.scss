@@ -1,0 +1,21 @@
+// Base colors
+// -- Change to match design requirements. Call them whatever you want. Add
+//    more as needed.
+$c-white: #fff;
+$c-grey: dimgrey;
+$c-black: #000;
+$c-blue: blue;
+
+// Abstractions
+// -- Configure which colors to use for elements across the site.
+$c-ui: $c-grey;
+$c-focus: $c-blue;
+$c-body: $c-grey;
+$c-link: $c-blue;
+
+$c-h1: $c-black;
+$c-h2: $c-black;
+$c-h3: $c-black;
+$c-h4: $c-black;
+$c-h5: $c-black;
+$c-h6: $c-black;

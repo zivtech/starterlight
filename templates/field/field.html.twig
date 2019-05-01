@@ -1,0 +1,160 @@
+{# Inheritance Examples
+  # Add classes, change element markup, etc.
+  {% include "field.html.twig" with {
+    'field_wrapper': {
+      'element': 'article',
+      'classes': [
+        'button-group',
+        multiple ? 'button-group--multiple' : '',
+      ],
+      'attributes': {
+        'data-foo': 'bar',
+      }
+    },
+    'field_label': {
+      'element': 'h1',
+      'attributes': {
+        'aria-hidden': 'false',
+      },
+    },
+    'field_items': {
+      'element': 'ul',
+      'classes': ['button-group__list'],
+    },
+    'field_item': {
+      'element': 'li',
+      'classes': ['button'],
+      'attributes': {
+        'aria-role': 'button',
+      },
+    },
+  } %}
+
+  # Override blocks
+  {% extends "field.html.twig" %}
+  {% block label %}
+    <h2 class="label">{{ label }}</h2>
+  {% endblock %}
+  {% block content %}
+    <div class="field-content">
+      {{ item.content }}
+    </div>
+  {% endblock %}
+
+  # Completely override template
+  {% extends "field.html.twig" %}
+  {% block override %}
+    <div{{ attributes}}>Bar</div>
+  {% endblock %}
+#}
+
+{#
+/**
+ * @file
+ * Theme override for a field.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the containing element.
+ * - label_hidden: Whether to show the field label or not.
+ * - title_attributes: HTML attributes for the title.
+ * - label: The label for the field.
+ * - multiple: TRUE if a field can contain multiple items.
+ * - items: List of all the field items. Each item contains:
+ *   - attributes: List of HTML attributes for each item.
+ *   - content: The field item's content.
+ * - entity_type: The entity type to which the field belongs.
+ * - field_name: The name of the field.
+ * - field_type: The type of the field.
+ * - label_display: The display settings for the label.
+ *
+ *
+ * @see template_preprocess_field()
+ */
+#}
+
+{# Set defaults and stage additions and overrides #}
+{% set config = {
+  "wrapper": {
+    'element': field_wrapper.element ?: 'div',
+    'classes': (field_wrapper.classes ?: [])|merge([
+      'field',
+      'field--name-' ~ field_name|clean_class,
+      'field--type-' ~ field_type|clean_class,
+      'field--label-' ~ label_display
+    ]),
+    'attributes': field_wrapper.attributes ?: {},
+  },
+  "label": {
+    'element': field_label.element ?: 'h3',
+    'classes': (field_label.classes ?: [])|merge([
+      'field__label',
+      label_display == 'visually_hidden' ? 'visually-hidden',
+    ]),
+    'attributes': field_label.attributes ?: {},
+  },
+  "items": {
+    'element': field_items.element ?: 'div',
+    'classes': field_items.classes ?: ['field__items'],
+    'attributes': field_items.attributes ?: {},
+  },
+  "item": {
+    'element': field_item.element ?: 'div',
+    'classes': field_item.classes ?: ['field__item'],
+    'attributes': field_item.attributes ?: {},
+  },
+} %}
+
+{# Configure attributes and apply classes #}
+{% for key, value in config.wrapper.attributes %}
+  {% set attributes = attributes.setAttribute(key, value) %}
+{% endfor %}
+{% set attributes = attributes.addClass(config.wrapper.classes) %}
+
+{% for key, value in config.label.attributes %}
+  {% set title_attributes = title_attributes.setAttribute(key, value) %}
+{% endfor %}
+{% set title_attributes = title_attributes.addClass(config.label.classes) %}
+
+{% set items_attributes = create_attribute() %}
+{% for key, value in config.items.attributes %}
+  {% set items_attributes = items_attributes.setAttribute(key, value) %}
+{% endfor %}
+{% set items_attributes = items_attributes.addClass(config.items.classes) %}
+
+{% for item in items %}
+  {% for key, value in config.item.attributes %}
+    {% set item = item|merge({'attributes': item.attributes.setAttribute(key, value)}) %}
+  {% endfor %}
+  {% set item = item|merge({'attributes': item.attributes.addClass(config.item.classes)}) %}
+{% endfor %}
+
+{# Render markup #}
+{% block override %}
+<{{ config.wrapper.element }}{{ attributes }}>
+
+  {% if not label_hidden %}
+    <{{ config.label.element }}{{ title_attributes }}>
+      {% block label %}
+        {{ label }}
+      {% endblock %}
+    </{{ config.label.element }}>
+  {% endif %}
+
+  {% block content %}
+  {% if multiple %}
+    <{{ config.items.element }}{{ items_attributes }}>
+  {% endif %}
+
+  {% for item in items %}
+    <{{ config.item.element }}{{ item.attributes }}>
+      {{ item.content }}
+    </{{ config.item.element }}>
+  {% endfor %}
+
+  {% if multiple %}
+    </{{ config.items.element }}>
+  {% endif %}
+  {% endblock %}
+
+</{{ config.wrapper.element }}>
+{% endblock %}

@@ -1,0 +1,146 @@
+{# Inheritance Examples
+  # Add classes, change element markup, etc.
+  {% include "block.html.twig" with {
+    'block_wrapper': {
+      'element': 'section',
+      'classes': ['foo'],
+      'attributes': {
+        'data-foo': 'bar',
+      },
+    },
+    'block_label': {
+      'element': 'h3',
+      'classes': ['bar'],
+      'attributes': {
+        'aria-hidden': 'false',
+      },
+    },
+    'block_content': {
+      'element': 'div',
+      'classes': ['baz'],
+      'attributes': {
+        'data-bar': 'baz',
+      },
+    },
+  } %}
+
+  # Override blocks
+  {% extends "block.html.twig" %}
+  {% block label %}
+    <span class="small">{{ label }}</span>
+  {% endblock %}
+  {% block content %}
+    <div class="block-content__inner">{{ content }}</div>
+  {% endblock %}
+
+  # Completely override template
+  {% extends "block.html.twig" %}
+  {% block override %}
+    <div{{ attributes}}>Bar</div>
+  {% endblock %}
+#}
+
+{# Set defaults and stage additions and overrides #}
+{% set config = {
+  'wrapper': {
+    'element': block_wrapper.element ?: 'div',
+    'classes': (block_wrapper.classes ?: [])|merge([
+      'block',
+      'block-' ~ configuration.provider|clean_class,
+      'block-' ~ plugin_id|clean_class,
+    ]),
+    'attributes': block_wrapper.attributes ?: {},
+  },
+  'label': {
+    'element': block_label.element ?: 'h2',
+    'classes': (block_label.classes ?: [])|merge([
+      'block__title',
+      'block-' ~ configuration.provider|clean_class ~ '__title',
+      'block-' ~ plugin_id|clean_class ~ '__title',
+    ]),
+    'attributes': block_label.attributes ?: {},
+  },
+  'content': {
+    'element': block_content.element,
+    'classes': (block_content.classes ?: [])|merge([
+      'block__content',
+      'block-' ~ configuration.provider|clean_class ~ '__content',
+      'block-' ~ plugin_id|clean_class ~ '__content',
+    ]),
+    'attributes': block_content.attributes ?: {},
+  },
+} %}
+
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+
+{# Configure attributes and apply classes #}
+{% for key, value in config.wrapper.attributes %}
+  {% set attributes = attributes.setAttribute(key, value) %}
+{% endfor %}
+{% set attributes = attributes.addClass(config.wrapper.classes) %}
+
+{% for key, value in config.label.attributes %}
+  {% set title_attributes = title_attributes.setAttribute(key, value) %}
+{% endfor %}
+{% set title_attributes = title_attributes.addClass(config.label.classes) %}
+
+{% set content_attributes = create_attribute() %}
+{% for key, value in config.content.attributes %}
+  {% set content_attributes = content_attributes.setAttribute(key, value) %}
+{% endfor %}
+{% set content_attributes = content_attributes.addClass(config.content.classes) %}
+
+{# Render markup #}
+{% block override %}
+{% if content %}
+  <{{ config.wrapper.element }}{{ attributes }}>
+
+  {% if configuration.label_display %}
+    {{ title_prefix }}
+    <{{ config.label.element }}{{ title_attributes }}>
+      {% block label %}
+        {{ configuration.label }}
+      {% endblock %}
+    </{{ config.label.element }}>
+    {{ title_suffix }}
+  {% endif %}
+
+  {% if config.content.element %}
+    <{{ config.content.element }}{{ content_attributes }}>
+  {% endif %}
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+  {% if config.content.element %}
+    </{{ config.content.element }}>
+  {% endif %}
+
+  </{{ config.wrapper.element }}>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,100 @@
+// Place any Drupal-related quirks here.
+
+// A fix for https://www.drupal.org/node/953034 - Themes currently cannot
+// determine if a region is empty
+.region-highlighted:empty {
+  display: none;
+}
+
+// Override styles from /core/modules/system/css/components/menu.theme.css
+.top-bar-section ul li {
+  padding-top: 0;
+
+  a.is-active {
+    color: #FFFFFF;
+  }
+}
+
+ul.menu {
+
+  a.is-active {
+    color: inherit;
+  }
+}
+
+// Preventing Top Bar FOUC
+// More info: https://www.drupal.org/node/2783573
+.no-js .top-bar {
+  display: none;
+}
+
+@media screen and (min-width: 40em) {
+  .no-js .top-bar {
+    display: block;
+  }
+  .no-js .title-bar {
+    display: none;
+  }
+}
+
+// Offset the top bar if the Navbar (toolbar) is present.
+body.toolbar-fixed .sticky.is-stuck .top-bar {
+  margin-top: 39px;
+}
+
+body.toolbar-fixed.toolbar-horizontal.toolbar-tray-open .sticky.is-stuck .top-bar {
+  margin-top: 78px;
+}
+
+body.toolbar-fixed .sticky.is-stuck.is-at-top {
+  margin-top: 0 !important;
+}
+
+// Removes core arrow image from menu items.
+.top-bar {
+  .menu-item--collapsed,.menu-item--expanded {
+    list-style: none;
+  }
+}
+
+
+// Style the search form, if embedded in the Top Bar.
+.top-bar .search-form {
+  .form-item-keys, .form-actions {
+    display: inline-block;
+  }
+}
+
+// Dropdown button styling.
+.dropbutton-wrapper {
+  // Sub-themes will have to override this color, unfortunately.
+  background-color: #008CBA;
+  margin: 0 0 1.25rem;
+
+  .button {
+    margin-bottom: 0;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+// Classy css components
+// Menu
+ul.menu {
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item {
+  padding-top: 0;
+}
+
+.menu-item--expanded,
+.menu-item--collapsed {
+  list-style-image: none;
+  list-style-type: none;
+}
+
+.field__label {
+  font-weight: normal;
+}

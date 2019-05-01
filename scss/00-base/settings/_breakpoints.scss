@@ -1,0 +1,32 @@
+// Breakpoints
+// -- Change to match design requirements. Add more as needed.
+$min-width-mobile: 540px;
+$min-width-tablet: 768px;
+$min-width-desktop: 1024px;
+
+@mixin bp($point) {
+  @if $point == mobile {
+    @media (min-width: $min-width-mobile) { @content ; }
+  } @else $point == tablet {
+    @media (min-width: $min-width-tablet) { @content ; }
+  } @else if $point == desktop {
+    @media (min-width: $min-width-desktop) { @content ; }
+  }
+}
+
+// Test yer breakpoints, uncomment below
+// body {
+//   border-top: 20px solid yellow;
+//
+//   @include bp(tablet) {
+//     border-top: 20px solid orange;
+//   }
+//
+//   @include bp(desktop) {
+//     border-top: 20px solid red;
+//   }
+//
+//   @include bp(wide) {
+//     border-top: 20px solid blue;
+//   }
+// }

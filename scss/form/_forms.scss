@@ -1,0 +1,103 @@
+// Form Input
+//-----------------------------------------------------------------------------
+input[type='text'],
+input[type='password'],
+input[type='date'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='week'],
+input[type='email'],
+input[type='number'],
+input[type='search'],
+input[type='tel'],
+input[type='time'],
+input[type='url'],
+textarea,
+select {
+  box-sizing: border-box;
+  border: 2px solid $color-d;
+  padding: rem-calc(15);
+  font-family: $font-Wk-Rg;
+  @include focus;
+  line-height: 1;
+  height: rem-calc(50);
+  background-color: $color-white;
+  color: $color-black;
+  border-radius: 0;
+  width: 100%;
+
+  @include bp(desktop) {
+    width: auto;
+  }
+}
+
+textarea {
+  height: auto;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  @include text-cta;
+  line-height: 1;
+  @include background-image('icon-plus.svg');
+  background-position: calc(100% - 15px) 50%;
+  padding-right: rem-calc(35);
+  cursor: pointer;
+
+  // for IE and Edge
+  &::-ms-expand {
+    display: none;
+  }
+
+  &:disabled::-ms-expand {
+    background: #f60;
+  }
+
+  option {
+    padding: 0;
+  }
+}
+
+.form-item {
+
+  label {
+    display: block;
+    @include text-cta;
+    margin-bottom: $sp1;
+  }
+
+  &.form-type-radio {
+
+    label {
+      display: inline;
+    }
+  }
+
+  // All select elements use the label as the first item/option, this is duplicate.
+  &.form-type-select {
+
+    label {
+      @include screen-reader-text;
+    }
+  }
+
+  &.form-item-date {
+
+    input[type='text'].hasDatepicker {
+      width: calc(100% - 35px);
+      margin-right: $sp1;
+
+      @include bp(desktop) {
+        width: auto;
+      }
+    }
+  }
+
+  img.ui-datepicker-trigger {
+    width: auto;
+    display: inline;
+  }
+}

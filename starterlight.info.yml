@@ -1,0 +1,23 @@
+name: Starterlight
+type: theme
+description: 'Drupal 8 starter theme developed by Zivtech.'
+core: 8.x
+base theme: stable
+logo: logo.svg
+
+libraries:
+  - starterlight/global-styles
+  - starterlight/global-scripts
+
+ckeditor_stylesheets:
+  - css/theme.css
+
+regions:
+  header: 'Header'
+  breadcrumb: 'Breadcrumb'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  content: 'Content'
+  sidebar_first: 'First sidebar'
+  sidebar_second: 'Second sidebar'
+  footer: 'Footer'

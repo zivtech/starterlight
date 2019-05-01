@@ -1,0 +1,168 @@
+// @file
+// Place your mixins here. Feel free to roll your own mixins.
+
+@mixin focus {
+  &:focus {
+    outline: 2px solid $c-focus;
+  }
+}
+
+@mixin button {
+  @include focus-button;
+
+  display: inline-block;
+  text-decoration: none;
+  margin: 0;
+  padding: rem-calc(14 25);
+  text-align: center;
+  color: $c-body;
+  border: 1px solid currentColor;
+
+  &:hover {
+    color: $c-black;
+  }
+
+  &:active {
+    text-decoration: underline;
+  }
+}
+
+
+@mixin pseudo-bg($transparent: .5) {
+  position: relative;
+  z-index: -1;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, $transparent);
+    z-index: 0;
+  }
+}
+
+@mixin transition-all {
+  transition: all 0.4s ease;
+}
+// Use $pos: absolute when you just want to visually hide text.
+// Sometimes when dealing with icons, other positioning is required
+@mixin screen-reader-text($pos: absolute) {
+  display: block;
+  overflow: hidden;
+  text-indent: -9999px;
+  font-size: 0;
+  line-height: 0;
+  margin: 0;
+  padding: 0;
+  position: $pos;
+
+  &::after,
+  &::before {
+    text-indent: 9999px;
+  }
+}
+
+// Background Image
+$image-path: '../images' !default;
+@mixin background-image($name, $size: false) {
+  background-image: url(#{$image-path}/#{$name});
+  background-repeat: no-repeat;
+  background-position: center center;
+  @if($size) {
+    background-size: $size;
+  }
+}
+
+// Gradient
+@mixin linear-gradient($direction, $color-stops...) {
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
+
+@mixin body-small {
+  font-family: $f-body;
+  font-size: rem-calc(12);
+  line-height: rem-calc(18);
+}
+
+@mixin body-large {
+  font-family: $f-body;
+  font-size: rem-calc(18);
+  line-height: rem-calc(27);
+}
+
+@mixin absolute($top: null, $right: null, $bottom: null, $left: null) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  transform: none;
+}
+
+@mixin pseudo($display: block, $pos: absolute, $content: '', $height: null, $width: null) {
+  content: $content;
+  display: $display;
+  position: $pos;
+  height: $height;
+  width: $width;
+}
+
+// https://engageinteractive.co.uk/blog/top-10-scss-mixins
+@mixin responsive-ratio($x, $y, $pseudo: false) {
+  position: relative;
+  $padding: unquote(( $y / $x ) * 100 + '%');
+  @if $pseudo {
+    &:before {
+      @include pseudo($pos: relative);
+      width: 100%;
+      padding-top: $padding;
+    }
+  } @else {
+    padding-top: $padding;
+  }
+}
+
+@mixin center-this($horizontal: true, $vertical: true) {
+  position: absolute;
+  @if ($horizontal and $vertical) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($horizontal) {
+    left: 50%;
+    transform: translate(-50%, 0);
+  } @else if ($vertical) {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}
+
+@mixin no-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
