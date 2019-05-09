@@ -44,25 +44,6 @@ var scssFiles = [
   '!' + options.theme.scss + '**/_*.scss',
 ];
 
-// The default task.
-gulp.task('default', ['build']);
-
-// Build everything.
-gulp.task('build', ['sass', 'lint']);
-
-// Default watch task.
-// @todo needs to add a javascript watch task.
-gulp.task('watch', ['watch:css']);
-
-// Watch for changes for scss files and rebuild.
-gulp.task('watch:css', ['sass', 'lint:sass'], function () {
-  return gulp.watch(options.theme.scss + '**/*.scss', options.gulpWatchOptions, ['sass', 'lint:sass']);
-});
-
-// Lint Sass and JavaScript.
-// @todo needs to add a javascript lint task.
-gulp.task('lint', ['lint:sass']);
-
 // Build CSS for development environment.
 gulp.task('sass', function () {
   return gulp.src(scssFiles)
@@ -117,3 +98,22 @@ gulp.task('lint:sass', function () {
     }))
     .pipe($.sassLint.format());
 });
+
+// Lint Sass and JavaScript.
+// @todo needs to add a javascript lint task.
+gulp.task('lint', gulp.series('lint:sass'));
+
+// Build everything.
+gulp.task('build', gulp.series('sass', 'lint'));
+
+// Watch for changes for scss files and rebuild.
+gulp.task('watch:css', gulp.series('sass', 'lint:sass'), function () {
+  return gulp.watch(options.theme.scss + '**/*.scss', options.gulpWatchOptions, gulp.series('sass', 'lint:sass'));
+});
+
+// Default watch task.
+// @todo needs to add a javascript watch task.
+gulp.task('watch', gulp.parallel('watch:css'));
+
+// The default task.
+gulp.task('default', gulp.series('build'));
