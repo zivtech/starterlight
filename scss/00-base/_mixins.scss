@@ -8,7 +8,7 @@
 }
 
 @mixin button {
-  @include focus-button;
+  @include focus;
 
   display: inline-block;
   text-decoration: none;

@@ -15,15 +15,16 @@ input[type='time'],
 input[type='url'],
 textarea,
 select {
-  box-sizing: border-box;
-  border: 2px solid $color-d;
-  padding: rem-calc(15);
-  font-family: $font-Wk-Rg;
   @include focus;
+
+  box-sizing: border-box;
+  border: 2px solid $c-ui;
+  padding: rem-calc(15);
+  font-family: $f-body;
   line-height: 1;
   height: rem-calc(50);
-  background-color: $color-white;
-  color: $color-black;
+  background-color: $c-white;
+  color: $c-black;
   border-radius: 0;
   width: 100%;
 
@@ -37,12 +38,12 @@ textarea {
 }
 
 select {
+  @include background-image('icon-plus.svg');
+
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  @include text-cta;
   line-height: 1;
-  @include background-image('icon-plus.svg');
   background-position: calc(100% - 15px) 50%;
   padding-right: rem-calc(35);
   cursor: pointer;
@@ -65,7 +66,6 @@ select {
 
   label {
     display: block;
-    @include text-cta;
     margin-bottom: $sp1;
   }
 

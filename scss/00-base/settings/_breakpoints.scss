@@ -7,7 +7,7 @@ $min-width-desktop: 1024px;
 @mixin bp($point) {
   @if $point == mobile {
     @media (min-width: $min-width-mobile) { @content ; }
-  } @else $point == tablet {
+  } @else if $point == tablet {
     @media (min-width: $min-width-tablet) { @content ; }
   } @else if $point == desktop {
     @media (min-width: $min-width-desktop) { @content ; }
