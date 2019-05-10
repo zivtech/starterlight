@@ -1,102 +1,93 @@
 'use strict';
 
 // Load Gulp and tools we will use.
-var $          = require('gulp-load-plugins')(),
-  del        = require('del'),
-  extend     = require('extend'),
-  fs         = require('fs'),
-  gulp       = require('gulp'),
-  importOnce = require('node-sass-import-once'),
-  sassGlob   = require('gulp-sass-glob');
+const gulp          = require('gulp'),
+      sass          = require('gulp-sass'),
+      sassGlob      = require('gulp-sass-glob'),
+      sassLint      = require('gulp-sass-lint'),
+      autoprefixer  = require('gulp-autoprefixer');
 
-var options = {};
-
-options.gulpWatchOptions = {};
-options.rootPath = {
-  project     : __dirname + '/',
-  theme       : __dirname + '/'
+const paths = {
+  styles: {
+    src: __dirname + '/scss/**/*.scss',
+    dest: __dirname + '/css/',
+  },
 };
 
-options.theme = {
-  root       : options.rootPath.theme,
-  scss       : options.rootPath.theme + 'scss/',
-  css        : options.rootPath.theme + 'css/'
+const options = {
+  // Turn sourcemaps on or off.
+  sourcemaps: true,
+  // Configure node-sass
+  sass: {
+    outputStyle: 'compressed',
+    noCache: true,
+    sourceMap: true,
+  },
+  // Configure sass-lint.
+  sassLint: {
+    files: {
+      ignore: ['scss/00-base/settings/**/*.scss'],
+    },
+    rules: {
+      'property-sort-order': 0,
+      'indentation': 0,
+      'no-color-literals': 0,
+      'variable-name-format': 0,
+      'force-element-nesting': 0,
+      'no-qualifying-elements': 0,
+      'placeholder-in-extend': 0,
+      'nesting-depth': 0,
+      'leading-zero': 0,
+      'no-duplicate-properties': 0,
+      'no-vendor-prefixes': 0,
+      'force-pseudo-nesting': 0,
+      'pseudo-element': 0,
+      'no-important': 0,
+      'extends-before-declarations': 2,
+      'extends-before-mixins': 0,
+      'mixins-before-declarations': [
+        2,
+        {
+          'exclude': [
+            'bp',
+          ],
+        },
+      ],
+      'declarations-before-nesting': 2,
+      'class-name-format': 0,
+      'no-transition-all': 0,
+      'space-around-operator': 0,
+      'force-attribute-nesting': 0,
+      'no-ids': 0,
+      'no-misspelled-properties': 0,
+    },
+  },
+  // Configure autoprefixer.
+  autoprefixer: {},
 };
 
-// Define the node-scss configuration.
-options.scss = {
-  importer: importOnce,
-  outputStyle: 'compressed',
-  lintIgnore: ['scss/_settings.scss', 'scss/base/_drupal.scss'],
-};
-
-// Define which browsers to add vendor prefixes for.
-options.autoprefixer = {
-  browsers: [
-    'last 2 versions',
-    'ie >= 11'
-  ]
-};
-
-var scssFiles = [
-  options.theme.scss + '**/*.scss',
-  // Do not open scss partials as they will be included as needed.
-  '!' + options.theme.scss + '**/_*.scss',
-];
 
 // Build CSS for development environment.
 gulp.task('sass', function () {
-  return gulp.src(scssFiles)
-    .pipe($.sourcemaps.init())
-    .pipe($.sassGlob())
-    // Allow the options object to override the defaults for the task.
-    .pipe($.sass(extend(true, {
-      noCache: true,
-      outputStyle: options.scss.outputStyle,
-      sourceMap: true
-    }, options.scss)).on('error', $.sass.logError))
-    .pipe($.autoprefixer(options.autoprefixer))
-    .pipe($.rename({dirname: ''}))
-    .pipe($.size({showFiles: true}))
-    .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest(options.theme.css));
+  return (
+    gulp.src(paths.styles.src, {
+      sourcemaps: options.sourcemaps
+    })
+    .pipe(sassGlob())
+    .pipe(sass(options.sass)).on('error', sass.logError)
+    .pipe(autoprefixer(options.autoprefixer))
+    .pipe(gulp.dest(paths.styles.dest, {
+      sourcemaps: options.sourcemaps ? '.' : false
+    }))
+  )
 });
 
 // Lint Sass.
 gulp.task('lint:sass', function () {
-  return gulp.src(options.theme.scss + '**/*.scss')
+  return gulp.src(paths.styles.src)
     // use gulp-cached to check only modified files.
-    .pipe($.sassLint({
-      files: {
-        include: $.cached('scsslint'),
-        ignore: options.scss.lintIgnore
-      },
-      rules: {
-        'property-sort-order': 0,
-        'indentation': 0,
-        'no-color-literals': 0,
-        'variable-name-format': 0,
-        'force-element-nesting': 0,
-        'no-qualifying-elements': 0,
-        'placeholder-in-extend': 0,
-        'nesting-depth': 0,
-        'leading-zero': 0,
-        'no-duplicate-properties': 0,
-        'no-vendor-prefixes': 0,
-        'force-pseudo-nesting': 0,
-        'pseudo-element': 0,
-        'no-important': 0,
-        'extends-before-declarations': 0,
-        'extends-before-mixins': 0,
-        'mixins-before-declarations': 0,
-        'class-name-format': 0,
-        'no-transition-all': 0,
-        'space-around-operator': 0,
-        'force-attribute-nesting': 0,
-        'no-ids': 0
-      }
-    }))
-    .pipe($.sassLint.format());
+    .pipe(sassLint(options.sassLint))
+    .pipe(sassLint.format())
 });
 
 // Lint Sass and JavaScript.
@@ -108,7 +99,7 @@ gulp.task('build', gulp.series('sass', 'lint'));
 
 // Watch for changes for scss files and rebuild.
 gulp.task('watch:css', gulp.series('sass', 'lint:sass'), function () {
-  return gulp.watch(options.theme.scss + '**/*.scss', options.gulpWatchOptions, gulp.series('sass', 'lint:sass'));
+  return gulp.watch(paths.styles.src, gulp.series('sass', 'lint:sass'));
 });
 
 // Default watch task.
