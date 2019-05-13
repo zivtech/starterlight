@@ -2,69 +2,24 @@
 
 // Load Gulp and tools we will use.
 const gulp          = require('gulp'),
+      fs            = require('fs'),
+      deepmerge     = require('deepmerge'),
       sass          = require('gulp-sass'),
       sassGlob      = require('gulp-sass-glob'),
       sassLint      = require('gulp-sass-lint'),
       autoprefixer  = require('gulp-autoprefixer'),
       browserSync   = require('browser-sync').create();
 
+// Load configuration.
+const options = fs.existsSync('./config.json')
+  ? deepmerge(require('./config.default.json'), require('./config.json'))
+  : require('./config.default.json');
+
 const paths = {
   styles: {
     src: __dirname + '/scss/**/*.scss',
     dest: __dirname + '/css/',
   },
-};
-
-const options = {
-  // Enter local environment address.
-  local: 'local.dev',
-  // Turn sourcemaps on or off.
-  sourcemaps: true,
-  // Configure node-sass
-  sass: {
-    outputStyle: 'expanded',
-  },
-  // Configure sass-lint.
-  sassLint: {
-    files: {
-      ignore: ['scss/00-base/settings/**/*.scss'],
-    },
-    rules: {
-      'property-sort-order': 0,
-      'indentation': 0,
-      'no-color-literals': 0,
-      'variable-name-format': 0,
-      'force-element-nesting': 0,
-      'no-qualifying-elements': 0,
-      'placeholder-in-extend': 0,
-      'nesting-depth': 0,
-      'leading-zero': 0,
-      'no-duplicate-properties': 0,
-      'no-vendor-prefixes': 0,
-      'force-pseudo-nesting': 0,
-      'pseudo-element': 0,
-      'no-important': 0,
-      'extends-before-declarations': 2,
-      'extends-before-mixins': 0,
-      'mixins-before-declarations': [
-        2,
-        {
-          'exclude': [
-            'bp',
-          ],
-        },
-      ],
-      'declarations-before-nesting': 2,
-      'class-name-format': 0,
-      'no-transition-all': 0,
-      'space-around-operator': 0,
-      'force-attribute-nesting': 0,
-      'no-ids': 0,
-      'no-misspelled-properties': 0,
-    },
-  },
-  // Configure autoprefixer.
-  autoprefixer: {},
 };
 
 // Build CSS for development environment.
