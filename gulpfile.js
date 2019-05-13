@@ -5,7 +5,8 @@ const gulp          = require('gulp'),
       sass          = require('gulp-sass'),
       sassGlob      = require('gulp-sass-glob'),
       sassLint      = require('gulp-sass-lint'),
-      autoprefixer  = require('gulp-autoprefixer');
+      autoprefixer  = require('gulp-autoprefixer'),
+      browserSync   = require('browser-sync').create();
 
 const paths = {
   styles: {
@@ -15,13 +16,13 @@ const paths = {
 };
 
 const options = {
+  // Enter local environment address.
+  local: 'local.dev',
   // Turn sourcemaps on or off.
   sourcemaps: true,
   // Configure node-sass
   sass: {
-    outputStyle: 'compressed',
-    noCache: true,
-    sourceMap: true,
+    outputStyle: 'expanded',
   },
   // Configure sass-lint.
   sassLint: {
@@ -66,11 +67,9 @@ const options = {
   autoprefixer: {},
 };
 
-
 // Build CSS for development environment.
 gulp.task('sass', function () {
-  return (
-    gulp.src(paths.styles.src, {
+  return gulp.src(paths.styles.src, {
       sourcemaps: options.sourcemaps
     })
     .pipe(sassGlob())
@@ -79,7 +78,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest(paths.styles.dest, {
       sourcemaps: options.sourcemaps ? '.' : false
     }))
-  )
+    .pipe(browserSync.reload({stream: true}));
 });
 
 // Lint Sass.
@@ -98,13 +97,20 @@ gulp.task('lint', gulp.series('lint:sass'));
 gulp.task('build', gulp.series('sass', 'lint'));
 
 // Watch for changes for scss files and rebuild.
-gulp.task('watch:css', gulp.series('sass', 'lint:sass'), function () {
-  return gulp.watch(paths.styles.src, gulp.series('sass', 'lint:sass'));
+gulp.task('watch:css', function () {
+  gulp.watch(paths.styles.src, gulp.series('sass', 'lint:sass'));
+});
+
+// Initiate BrowserSync server.
+gulp.task('serve', function() {
+  browserSync.init({
+    proxy: options.local,
+  });
 });
 
 // Default watch task.
 // @todo needs to add a javascript watch task.
-gulp.task('watch', gulp.parallel('watch:css'));
+gulp.task('watch', gulp.parallel('serve', 'watch:css'));
 
 // The default task.
 gulp.task('default', gulp.series('build'));

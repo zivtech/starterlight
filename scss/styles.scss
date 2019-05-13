@@ -1,4 +1,8 @@
-// Make sure the charset is set appropriately
-@charset 'utf-8';
 @import '00-base/all';
-@import '*/**/*';
+@import 'block/**/*';
+@import 'content/**/*';
+@import 'field/**/*';
+@import 'form/**/*';
+@import 'layout/**/*';
+@import 'paragraphs/**/*';
+@import 'views/**/*';

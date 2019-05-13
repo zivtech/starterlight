@@ -11,10 +11,12 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "browser-sync": "^2.26.5",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^6.1.0",
     "gulp-sass": "^4.0.2",
     "gulp-sass-glob": "^1.0.9",
-    "gulp-sass-lint": "^1.4.0"
+    "gulp-sass-lint": "^1.4.0",
+    "postcss": "^7.0.16"
   }
 }

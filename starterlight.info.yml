@@ -10,7 +10,7 @@ libraries:
   - starterlight/global-scripts
 
 ckeditor_stylesheets:
-  - css/theme.css
+  - css/styles.css
 
 regions:
   header: 'Header'
