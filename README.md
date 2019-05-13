@@ -2,6 +2,10 @@
 
 A starter theme for Drupal 8 projects.
 
+- [Configuration](#configuration)
+   - [Options](#options)
+   - [Local configuration overrides](#local-configuration-overrides)
+
 ## Configuration
 Theme configuration is in the `config.default.json` file. You will probably be happy with most of the defaults in this file, though you should absolutely tailor these options for each theme:
 
@@ -17,8 +21,6 @@ Theme configuration is in the `config.default.json` file. You will probably be h
   }
 }
 ```
-
-You can override the default configuration by creating a `config.json` file at the theme root. Copy the configuration from `config.default.json` you want to override into `config.json` and customize the values.
 
 ### Options
 **local** (string)
@@ -45,4 +47,7 @@ An object of [autoprefixer configuration options](https://github.com/postcss/aut
 
 - **source**: The path to the image file from which the rest of the favicons will be created.
 - **imgDir**: The directory the generated favicons will be placed in.
-- **config**: An object of (favicons configuration options)[https://github.com/itgalaxy/favicons#usage].
+- **config**: An object of [favicons configuration options](https://github.com/itgalaxy/favicons#usage).
+
+### Local configuration overrides
+You can override the default configuration for just your local environment by creating a `config.json` file at the theme root. Copy the configuration from `config.default.json` you want to override into `config.json` and customize the values.
