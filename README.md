@@ -37,9 +37,10 @@ An object of [node-sass configuration options](https://github.com/sass/node-sass
 
 An object of [sass-lint configuration options](https://github.com/sasstools/sass-lint#configuring).
 
-**autoprefixer** (obj)
+**postcss** (obj)
 
-An object of [autoprefixer configuration options](https://github.com/postcss/autoprefixer#options).
+- **postcssPresetEnv**: An object of [postcss-preset-env configuration options](https://github.com/csstools/postcss-preset-env#options). Use this if you need to support older browsers (e.g. IE11) but want to use newer CSS specifications. See https://preset-env.cssdb.org/features for a list of features this helps support.
+- **mqpacker**: An object of [mqpacker configuration options](https://github.com/hail2u/node-css-mqpacker#options).
 
 **favicons** (obj)
 

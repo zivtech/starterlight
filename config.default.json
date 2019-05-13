@@ -42,7 +42,13 @@
       "no-misspelled-properties": 0
     }
   },
-  "autoprefixer": {},
+  "postcss": {
+    "postcssPresetEnv": {
+      "autoprefixer": {},
+      "features": {}
+    },
+    "mqpacker": {}
+  },
   "favicons": {
     "source": "./images/favicon-source.png",
     "imgDir": "./images/favicons/",

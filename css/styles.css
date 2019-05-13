@@ -95,15 +95,6 @@ ul.menu a.is-active {
   display: none;
 }
 
-@media screen and (min-width: 40em) {
-  .no-js .top-bar {
-    display: block;
-  }
-  .no-js .title-bar {
-    display: none;
-  }
-}
-
 body.toolbar-fixed .sticky.is-stuck .top-bar {
   margin-top: 39px;
 }
@@ -222,26 +213,6 @@ select:focus {
   outline: 2px solid blue;
 }
 
-@media (min-width: 1024px) {
-  input[type='text'],
-  input[type='password'],
-  input[type='date'],
-  input[type='datetime'],
-  input[type='datetime-local'],
-  input[type='month'],
-  input[type='week'],
-  input[type='email'],
-  input[type='number'],
-  input[type='search'],
-  input[type='tel'],
-  input[type='time'],
-  input[type='url'],
-  textarea,
-  select {
-    width: auto;
-  }
-}
-
 textarea {
   height: auto;
 }
@@ -300,14 +271,40 @@ select option {
   margin-right: rem-calc(10);
 }
 
-@media (min-width: 1024px) {
-  .form-item.form-item-date input[type='text'].hasDatepicker {
-    width: auto;
-  }
-}
-
 .form-item img.ui-datepicker-trigger {
   width: auto;
   display: inline;
+}
+
+@media screen and (min-width: 40em) {
+  .no-js .top-bar {
+    display: block;
+  }
+  .no-js .title-bar {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  input[type='text'],
+  input[type='password'],
+  input[type='date'],
+  input[type='datetime'],
+  input[type='datetime-local'],
+  input[type='month'],
+  input[type='week'],
+  input[type='email'],
+  input[type='number'],
+  input[type='search'],
+  input[type='tel'],
+  input[type='time'],
+  input[type='url'],
+  textarea,
+  select {
+    width: auto;
+  }
+  .form-item.form-item-date input[type='text'].hasDatepicker {
+    width: auto;
+  }
 }
 /*# sourceMappingURL=styles.css.map */

@@ -8,7 +8,9 @@ const gulp          = require('gulp'),
       sass          = require('gulp-sass'),
       sassGlob      = require('gulp-sass-glob'),
       sassLint      = require('gulp-sass-lint'),
-      autoprefixer  = require('gulp-autoprefixer'),
+      postcss       = require('gulp-postcss'),
+      mqpacker      = require('css-mqpacker'),
+      presetEnv     = require('postcss-preset-env'),
       browserSync   = require('browser-sync').create(),
       favicons      = require('favicons').stream;
 
@@ -31,7 +33,10 @@ gulp.task('sass', function () {
     })
     .pipe(sassGlob())
     .pipe(sass(options.sass)).on('error', sass.logError)
-    .pipe(autoprefixer(options.autoprefixer))
+    .pipe(postcss([
+      presetEnv(options.postcss.postcssPresetEnv),
+      mqpacker(options.postcss.mqpacker),
+    ]))
     .pipe(gulp.dest(paths.styles.dest, {
       sourcemaps: options.sourcemaps ? '.' : false
     }))
