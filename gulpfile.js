@@ -4,11 +4,13 @@
 const gulp          = require('gulp'),
       fs            = require('fs'),
       deepmerge     = require('deepmerge'),
+      inject        = require('gulp-inject'),
       sass          = require('gulp-sass'),
       sassGlob      = require('gulp-sass-glob'),
       sassLint      = require('gulp-sass-lint'),
       autoprefixer  = require('gulp-autoprefixer'),
-      browserSync   = require('browser-sync').create();
+      browserSync   = require('browser-sync').create(),
+      favicons      = require('favicons').stream;
 
 // Load configuration.
 const options = fs.existsSync('./config.json')
@@ -62,6 +64,27 @@ gulp.task('serve', function() {
     proxy: options.local,
   });
 });
+
+// Generate favicons.
+gulp.task('favicons:generate', function () {
+  return gulp.src(options.favicons.source)
+    .pipe(favicons(options.favicons.config))
+    .pipe(gulp.dest(options.favicons.imgDir));
+});
+
+// Inject favicons into template.
+gulp.task('favicons:inject', function() {
+  return gulp.src('./templates/layout/html.html.twig')
+    .pipe(inject(gulp.src(options.favicons.imgDir + options.favicons.config.html), {
+      transform: function (filePath, file) {
+        return file.contents.toString();
+      }
+    }))
+  .pipe(gulp.dest('./templates/layout'));
+});
+
+// Wrapper task for handling favicons.
+gulp.task('favicons', gulp.series('favicons:generate', 'favicons:inject'));
 
 // Default watch task.
 // @todo needs to add a javascript watch task.

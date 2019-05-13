@@ -42,5 +42,54 @@
       "no-misspelled-properties": 0
     }
   },
-  "autoprefixer": {}
+  "autoprefixer": {},
+  "favicons": {
+    "source": "./images/favicon-source.png",
+    "imgDir": "./images/favicons/",
+    "config": {
+      "path": "/themes/custom/starterlight/images/favicons",
+      "appName": "Enter the name of the site or app here",
+      "appDescription": "Enter a short description of the site or app here",
+      "appleStatusBarStyle": "#fff",
+      "background": "#fff",
+      "theme_color": "#fff",
+      "display": "standalone",
+      "orientation": "portrait",
+      "start_url": "/?homescreen=1",
+      "version": 1.0,
+      "logging": false,
+      "html": "favicons.html",
+      "pipeHTML": true,
+      "replace": true,
+      "icons": {
+        "android": {
+          "offset": 10,
+          "background": true
+        },
+        "appleIcon": {
+          "offset": 10,
+          "background": true
+        },
+        "appleStartup": {
+          "offset": 10,
+          "background": true
+        },
+        "coast": {
+          "offset": 10
+        },
+        "favicons": true,
+        "firefox": {
+          "offset": 15,
+          "background": true,
+          "mask": true,
+          "overlayGlow": false
+        },
+        "windows": {
+          "offset": 10,
+          "background": true
+        },
+        "yandex": true
+      }
+    }
+  }
 }
