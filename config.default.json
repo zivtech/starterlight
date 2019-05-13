@@ -91,5 +91,9 @@
         "yandex": true
       }
     }
+  },
+  "browserSync": {
+    "proxy": "local.dev",
+    "open": true
   }
 }

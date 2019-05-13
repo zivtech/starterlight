@@ -60,9 +60,7 @@ gulp.task('watch:css', function () {
 
 // Initiate BrowserSync server.
 gulp.task('serve', function() {
-  browserSync.init({
-    proxy: options.local,
-  });
+  browserSync.init(options.browserSync);
 });
 
 // Generate favicons.
