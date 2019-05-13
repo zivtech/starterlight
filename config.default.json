@@ -47,7 +47,26 @@
       "autoprefixer": {},
       "features": {}
     },
-    "mqpacker": {}
+    "mqpacker": {},
+    "cssnano": {
+      "preset": [
+        "default",
+        {
+          "autoprefixer": {
+            "exclude": false
+          },
+          "discardUnused": {
+            "exclude": false
+          },
+          "mergeIdents": {
+            "exclude": false
+          },
+          "reduceIdents": {
+            "exclude": false
+          }
+        }
+      ]
+    }
   },
   "favicons": {
     "source": "./images/favicon-source.png",

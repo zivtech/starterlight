@@ -11,6 +11,7 @@ const gulp          = require('gulp'),
       postcss       = require('gulp-postcss'),
       mqpacker      = require('css-mqpacker'),
       presetEnv     = require('postcss-preset-env'),
+      cssnano       = require('cssnano'),
       browserSync   = require('browser-sync').create(),
       favicons      = require('favicons').stream;
 
@@ -36,6 +37,7 @@ gulp.task('sass', function () {
     .pipe(postcss([
       presetEnv(options.postcss.postcssPresetEnv),
       mqpacker(options.postcss.mqpacker),
+      cssnano(options.postcss.cssnano),
     ]))
     .pipe(gulp.dest(paths.styles.dest, {
       sourcemaps: options.sourcemaps ? '.' : false
