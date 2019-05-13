@@ -1,102 +1,56 @@
 'use strict';
 
 // Load Gulp and tools we will use.
-var $          = require('gulp-load-plugins')(),
-  del        = require('del'),
-  extend     = require('extend'),
-  fs         = require('fs'),
-  gulp       = require('gulp'),
-  importOnce = require('node-sass-import-once'),
-  sassGlob   = require('gulp-sass-glob');
+const gulp          = require('gulp'),
+      fs            = require('fs'),
+      deepmerge     = require('deepmerge'),
+      inject        = require('gulp-inject'),
+      sass          = require('gulp-sass'),
+      sassGlob      = require('gulp-sass-glob'),
+      sassLint      = require('gulp-sass-lint'),
+      postcss       = require('gulp-postcss'),
+      mqpacker      = require('css-mqpacker'),
+      presetEnv     = require('postcss-preset-env'),
+      cssnano       = require('cssnano'),
+      browserSync   = require('browser-sync').create(),
+      favicons      = require('favicons').stream;
 
-var options = {};
+// Load configuration.
+const options = fs.existsSync('./config.json')
+  ? deepmerge(require('./config.default.json'), require('./config.json'))
+  : require('./config.default.json');
 
-options.gulpWatchOptions = {};
-options.rootPath = {
-  project     : __dirname + '/',
-  theme       : __dirname + '/'
+const paths = {
+  styles: {
+    src: __dirname + '/scss/**/*.scss',
+    dest: __dirname + '/css/',
+  },
 };
-
-options.theme = {
-  root       : options.rootPath.theme,
-  scss       : options.rootPath.theme + 'scss/',
-  css        : options.rootPath.theme + 'css/'
-};
-
-// Define the node-scss configuration.
-options.scss = {
-  importer: importOnce,
-  outputStyle: 'compressed',
-  lintIgnore: ['scss/_settings.scss', 'scss/base/_drupal.scss'],
-};
-
-// Define which browsers to add vendor prefixes for.
-options.autoprefixer = {
-  browsers: [
-    'last 2 versions',
-    'ie >= 11'
-  ]
-};
-
-var scssFiles = [
-  options.theme.scss + '**/*.scss',
-  // Do not open scss partials as they will be included as needed.
-  '!' + options.theme.scss + '**/_*.scss',
-];
 
 // Build CSS for development environment.
 gulp.task('sass', function () {
-  return gulp.src(scssFiles)
-    .pipe($.sourcemaps.init())
-    .pipe($.sassGlob())
-    // Allow the options object to override the defaults for the task.
-    .pipe($.sass(extend(true, {
-      noCache: true,
-      outputStyle: options.scss.outputStyle,
-      sourceMap: true
-    }, options.scss)).on('error', $.sass.logError))
-    .pipe($.autoprefixer(options.autoprefixer))
-    .pipe($.rename({dirname: ''}))
-    .pipe($.size({showFiles: true}))
-    .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest(options.theme.css));
+  return gulp.src(paths.styles.src, {
+      sourcemaps: options.sourcemaps
+    })
+    .pipe(sassGlob())
+    .pipe(sass(options.sass)).on('error', sass.logError)
+    .pipe(postcss([
+      presetEnv(options.postcss.postcssPresetEnv),
+      mqpacker(options.postcss.mqpacker),
+      cssnano(options.postcss.cssnano),
+    ]))
+    .pipe(gulp.dest(paths.styles.dest, {
+      sourcemaps: options.sourcemaps ? '.' : false
+    }))
+    .pipe(browserSync.reload({stream: true}));
 });
 
 // Lint Sass.
 gulp.task('lint:sass', function () {
-  return gulp.src(options.theme.scss + '**/*.scss')
+  return gulp.src(paths.styles.src)
     // use gulp-cached to check only modified files.
-    .pipe($.sassLint({
-      files: {
-        include: $.cached('scsslint'),
-        ignore: options.scss.lintIgnore
-      },
-      rules: {
-        'property-sort-order': 0,
-        'indentation': 0,
-        'no-color-literals': 0,
-        'variable-name-format': 0,
-        'force-element-nesting': 0,
-        'no-qualifying-elements': 0,
-        'placeholder-in-extend': 0,
-        'nesting-depth': 0,
-        'leading-zero': 0,
-        'no-duplicate-properties': 0,
-        'no-vendor-prefixes': 0,
-        'force-pseudo-nesting': 0,
-        'pseudo-element': 0,
-        'no-important': 0,
-        'extends-before-declarations': 0,
-        'extends-before-mixins': 0,
-        'mixins-before-declarations': 0,
-        'class-name-format': 0,
-        'no-transition-all': 0,
-        'space-around-operator': 0,
-        'force-attribute-nesting': 0,
-        'no-ids': 0
-      }
-    }))
-    .pipe($.sassLint.format());
+    .pipe(sassLint(options.sassLint))
+    .pipe(sassLint.format())
 });
 
 // Lint Sass and JavaScript.
@@ -107,13 +61,39 @@ gulp.task('lint', gulp.series('lint:sass'));
 gulp.task('build', gulp.series('sass', 'lint'));
 
 // Watch for changes for scss files and rebuild.
-gulp.task('watch:css', gulp.series('sass', 'lint:sass'), function () {
-  return gulp.watch(options.theme.scss + '**/*.scss', options.gulpWatchOptions, gulp.series('sass', 'lint:sass'));
+gulp.task('watch:css', function () {
+  gulp.watch(paths.styles.src, gulp.series('sass', 'lint:sass'));
 });
+
+// Initiate BrowserSync server.
+gulp.task('serve', function() {
+  browserSync.init(options.browserSync);
+});
+
+// Generate favicons.
+gulp.task('favicons:generate', function () {
+  return gulp.src(options.favicons.source)
+    .pipe(favicons(options.favicons.config))
+    .pipe(gulp.dest(options.favicons.imgDir));
+});
+
+// Inject favicons into template.
+gulp.task('favicons:inject', function() {
+  return gulp.src('./templates/layout/html.html.twig')
+    .pipe(inject(gulp.src(options.favicons.imgDir + options.favicons.config.html), {
+      transform: function (filePath, file) {
+        return file.contents.toString();
+      }
+    }))
+  .pipe(gulp.dest('./templates/layout'));
+});
+
+// Wrapper task for handling favicons.
+gulp.task('favicons', gulp.series('favicons:generate', 'favicons:inject'));
 
 // Default watch task.
 // @todo needs to add a javascript watch task.
-gulp.task('watch', gulp.parallel('watch:css'));
+gulp.task('watch', gulp.parallel('serve', 'watch:css'));
 
 // The default task.
 gulp.task('default', gulp.series('build'));
