@@ -2,8 +2,15 @@
   "local": "local.dev",
   "sourcemaps": true,
   "sass": {
-    "outputStyle": "expanded"
+    "paths": {
+      "src": "./scss/**/*.scss",
+      "dest": "./css/"
+    },
+    "config": {
+      "outputStyle": "expanded"
+    }
   },
+  "sassGlob": {},
   "sassLint": {
     "files": {
       "ignore": ["scss/00-base/settings/**/*.scss"]
@@ -69,8 +76,12 @@
     }
   },
   "favicons": {
-    "source": "./images/favicon-source.png",
-    "imgDir": "./images/favicons/",
+    "paths": {
+      "src": "./images/favicon-source.png",
+      "dest": "./images/favicons/",
+      "templateFile": "html.html.twig",
+      "templateDir": "./templates/layout/"
+    },
     "config": {
       "path": "/themes/custom/starterlight/images/favicons",
       "appName": "Enter the name of the site or app here",

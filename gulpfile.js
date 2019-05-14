@@ -20,26 +20,19 @@ const options = fs.existsSync('./config.json')
   ? deepmerge(require('./config.default.json'), require('./config.json'))
   : require('./config.default.json');
 
-const paths = {
-  styles: {
-    src: __dirname + '/scss/**/*.scss',
-    dest: __dirname + '/css/',
-  },
-};
-
 // Build CSS for development environment.
 gulp.task('sass', function () {
-  return gulp.src(paths.styles.src, {
+  return gulp.src(options.sass.paths.src, {
       sourcemaps: options.sourcemaps
     })
-    .pipe(sassGlob())
-    .pipe(sass(options.sass)).on('error', sass.logError)
+    .pipe(sassGlob(options.sassGlob))
+    .pipe(sass(options.sass.config)).on('error', sass.logError)
     .pipe(postcss([
       presetEnv(options.postcss.postcssPresetEnv),
       mqpacker(options.postcss.mqpacker),
       cssnano(options.postcss.cssnano),
     ]))
-    .pipe(gulp.dest(paths.styles.dest, {
+    .pipe(gulp.dest(options.sass.paths.dest, {
       sourcemaps: options.sourcemaps ? '.' : false
     }))
     .pipe(browserSync.reload({stream: true}));
@@ -47,7 +40,7 @@ gulp.task('sass', function () {
 
 // Lint Sass.
 gulp.task('lint:sass', function () {
-  return gulp.src(paths.styles.src)
+  return gulp.src(options.sass.paths.src)
     // use gulp-cached to check only modified files.
     .pipe(sassLint(options.sassLint))
     .pipe(sassLint.format())
@@ -62,7 +55,7 @@ gulp.task('build', gulp.series('sass', 'lint'));
 
 // Watch for changes for scss files and rebuild.
 gulp.task('watch:css', function () {
-  gulp.watch(paths.styles.src, gulp.series('sass', 'lint:sass'));
+  gulp.watch(options.sass.paths.src, gulp.series('sass', 'lint:sass'));
 });
 
 // Initiate BrowserSync server.
@@ -72,20 +65,20 @@ gulp.task('serve', function() {
 
 // Generate favicons.
 gulp.task('favicons:generate', function () {
-  return gulp.src(options.favicons.source)
+  return gulp.src(options.favicons.paths.src)
     .pipe(favicons(options.favicons.config))
-    .pipe(gulp.dest(options.favicons.imgDir));
+    .pipe(gulp.dest(options.favicons.paths.dest));
 });
 
 // Inject favicons into template.
 gulp.task('favicons:inject', function() {
-  return gulp.src('./templates/layout/html.html.twig')
-    .pipe(inject(gulp.src(options.favicons.imgDir + options.favicons.config.html), {
+  return gulp.src(options.favicons.paths.templateDir + options.favicons.paths.templateFile)
+    .pipe(inject(gulp.src(options.favicons.paths.dest + options.favicons.config.html), {
       transform: function (filePath, file) {
         return file.contents.toString();
       }
     }))
-  .pipe(gulp.dest('./templates/layout'));
+  .pipe(gulp.dest(options.favicons.paths.templateDir));
 });
 
 // Wrapper task for handling favicons.
