@@ -166,3 +166,8 @@ $image-path: '../images' !default;
     clear: both;
   }
 }
+
+@mixin full-width {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
