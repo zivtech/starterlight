@@ -12,6 +12,7 @@ const gulp          = require('gulp'),
       mqpacker      = require('css-mqpacker'),
       presetEnv     = require('postcss-preset-env'),
       cssnano       = require('cssnano'),
+      eslint        = require('gulp-eslint'),
       browserSync   = require('browser-sync').create(),
       favicons      = require('favicons').stream;
 
@@ -23,7 +24,7 @@ const options = fs.existsSync('./config.json')
 // Build CSS for development environment.
 gulp.task('sass', function () {
   return gulp.src(options.sass.paths.src, {
-      sourcemaps: options.sourcemaps
+      sourcemaps: options.sass.sourcemaps
     })
     .pipe(sassGlob(options.sassGlob))
     .pipe(sass(options.sass.config)).on('error', sass.logError)
@@ -33,7 +34,7 @@ gulp.task('sass', function () {
       cssnano(options.postcss.cssnano),
     ]))
     .pipe(gulp.dest(options.sass.paths.dest, {
-      sourcemaps: options.sourcemaps ? '.' : false
+      sourcemaps: options.sass.sourcemaps ? '.' : false
     }))
     .pipe(browserSync.reload({stream: true}));
 });
@@ -41,21 +42,31 @@ gulp.task('sass', function () {
 // Lint Sass.
 gulp.task('lint:sass', function () {
   return gulp.src(options.sass.paths.src)
-    // use gulp-cached to check only modified files.
     .pipe(sassLint(options.sassLint))
     .pipe(sassLint.format())
 });
 
+// Lint JS
+gulp.task('lint:js', function() {
+  return gulp.src(options.js.paths.src)
+    .pipe(eslint(options.eslint))
+    .pipe(eslint.format())
+});
+
 // Lint Sass and JavaScript.
-// @todo needs to add a javascript lint task.
-gulp.task('lint', gulp.series('lint:sass'));
+gulp.task('lint', gulp.parallel('lint:sass', 'lint:js'));
 
 // Build everything.
 gulp.task('build', gulp.series('sass', 'lint'));
 
-// Watch for changes for scss files and rebuild.
+// Watch for changes to Sass files and rebuild.
 gulp.task('watch:css', function () {
   gulp.watch(options.sass.paths.src, gulp.series('sass', 'lint:sass'));
+});
+
+// Watch for changes to JS files and lint them.
+gulp.task('watch:js', function () {
+  gulp.watch(options.js.paths.src, gulp.series('lint:js'));
 });
 
 // Initiate BrowserSync server.
@@ -85,8 +96,7 @@ gulp.task('favicons:inject', function() {
 gulp.task('favicons', gulp.series('favicons:generate', 'favicons:inject'));
 
 // Default watch task.
-// @todo needs to add a javascript watch task.
-gulp.task('watch', gulp.parallel('serve', 'watch:css'));
+gulp.task('watch', gulp.parallel('serve', 'watch:css', 'watch:js'));
 
 // The default task.
 gulp.task('default', gulp.series('build'));

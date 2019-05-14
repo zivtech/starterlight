@@ -1,14 +1,19 @@
 {
-  "local": "local.dev",
-  "sourcemaps": true,
   "sass": {
+    "sourcemaps": true,
     "paths": {
-      "src": "./scss/**/*.scss",
+      "src": ["./scss/**/*.scss"],
       "dest": "./css/"
     },
     "config": {
       "outputStyle": "expanded"
     }
+  },
+  "js": {
+    "paths": {
+      "src": ["./js/**/*.js"]
+    },
+    "eslint": {}
   },
   "sassGlob": {},
   "sassLint": {

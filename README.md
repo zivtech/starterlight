@@ -31,10 +31,16 @@ Turn Sass sourcemaps on or off.
 
 **sass** (obj)
 
- - **paths** (obj)
-    - **src**: A glob of Sass files to be compiled into CSS.
-    - **dest**: The directory the compiled CSS file will be placed in.
- - **config**: An object of [node-sass configuration options](https://github.com/sass/node-sass#options).
+- **paths** (obj)
+  - **src**: A glob of Sass files to be compiled into CSS.
+  - **dest**: The directory the compiled CSS file will be placed in.
+- **config**: An object of [node-sass configuration options](https://github.com/sass/node-sass#options).
+
+**js** (obj)
+
+- **paths** (obj)
+  - **src**: A glob of JS files to lint.
+- **eslint**: An object of [eslint configuration options](https://eslint.org/docs/user-guide/configuring). This will typically be unused since we inherit our linting rules from Drupal core.
 
 **sassGlob** (obj)
 
@@ -53,10 +59,10 @@ An object of [sass-lint configuration options](https://github.com/sasstools/sass
 **favicons** (obj)
 
 - **paths** (obj)
-    - **src**: The path to the image file from which the rest of the favicons will be created.
-    - **dest**: The directory the generated favicons will be placed in.
-    - **templateFile**: The name of the template file where favicons will be injected. This should be to `html.html.twig` unless you changed where the injection tags are located.
-    - **templateDir**: The path to the directory where the `templateFile` lives.
+  - **src**: The path to the image file from which the rest of the favicons will be created.
+  - **dest**: The directory the generated favicons will be placed in.
+  - **templateFile**: The name of the template file where favicons will be injected. This should be to `html.html.twig` unless you changed where the injection tags are located.
+  - **templateDir**: The path to the directory where the `templateFile` lives.
 - **config**: An object of [favicons configuration options](https://github.com/itgalaxy/favicons#usage).
 
 **browserSync** (obj)
