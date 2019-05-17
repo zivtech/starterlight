@@ -38,8 +38,6 @@ textarea {
 }
 
 select {
-  @include background-image('icon-plus.svg');
-
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
