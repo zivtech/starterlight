@@ -2,7 +2,7 @@ name: Starterlight
 type: theme
 description: 'Drupal 8 starter theme developed by Zivtech.'
 core: 8.x
-base theme: stable
+base theme: classy
 logo: logo.svg
 
 libraries:
