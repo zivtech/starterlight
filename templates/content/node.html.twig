@@ -147,7 +147,7 @@
     },
     'label': {
       'element': node_label.element ?: 'h2',
-      'display': node_label.display ?: not page,
+      'display': node_label.display is defined ? node_label.display : not page,
       'link': node_label.link is defined ? node_label.link : true,
       'classes': (node_label.classes ?: [])|merge([
         'node__title',
