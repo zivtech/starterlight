@@ -171,3 +171,13 @@ $image-path: '../images' !default;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 }
+
+// Apply styles to the current selector when JavaScript is not loaded.
+@mixin no-js {
+  $this: &; // Cache the current selector
+  @at-root html:not(.js) {
+    #{$this} {
+      @content;
+    }
+  }
+}
