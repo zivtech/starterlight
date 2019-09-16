@@ -65,6 +65,9 @@
     text-indent: 9999px;
   }
 }
+.screen-reader-text {
+  @include screen-reader-text;
+}
 
 // Background Image
 $image-path: '../images' !default;
@@ -179,5 +182,16 @@ $image-path: '../images' !default;
     #{$this} {
       @content;
     }
+  }
+}
+
+@mixin hover($linkcolor: $color-primary, $hovercolor: $color-black) {
+  color: $linkcolor;
+  text-decoration: none;
+
+  &:hover {
+    color: $hovercolor;
+    text-decoration: none;
+    border-bottom: 1px solid;
   }
 }
