@@ -1,13 +1,13 @@
-@import "settings/colors";
-@import "settings/typography";
-@import "settings/layout";
-@import "settings/breakpoints";
+@import 'settings/colors';
+@import 'settings/typography';
+@import 'settings/layout';
+@import 'settings/breakpoints';
+@import 'settings/rem-calc';
+@import 'settings/utility';
 
-@import "mixins";
-@import "rem-calc";
-@import "css-grid";
+@import 'mixins';
+@import 'css-grid';
 
-@import "global";
-@import "drupal";
-@import "utility";
-@import "wysiwyg";
+@import 'global';
+@import 'drupal';
+@import 'wysiwyg';

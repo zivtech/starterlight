@@ -11,14 +11,7 @@
   padding-top: 0;
 
   a.is-active {
-    color: #FFFFFF;
-  }
-}
-
-ul.menu {
-
-  a.is-active {
-    color: inherit;
+    color: $c-white;
   }
 }
 
@@ -29,9 +22,11 @@ ul.menu {
 }
 
 @media screen and (min-width: 40em) {
+
   .no-js .top-bar {
     display: block;
   }
+
   .no-js .title-bar {
     display: none;
   }
@@ -52,7 +47,9 @@ body.toolbar-fixed .sticky.is-stuck.is-at-top {
 
 // Removes core arrow image from menu items.
 .top-bar {
-  .menu-item--collapsed,.menu-item--expanded {
+
+  .menu-item--collapsed,
+  .menu-item--expanded {
     list-style: none;
   }
 }
@@ -60,7 +57,9 @@ body.toolbar-fixed .sticky.is-stuck.is-at-top {
 
 // Style the search form, if embedded in the Top Bar.
 .top-bar .search-form {
-  .form-item-keys, .form-actions {
+
+  .form-item-keys,
+  .form-actions {
     display: inline-block;
   }
 }
@@ -68,7 +67,7 @@ body.toolbar-fixed .sticky.is-stuck.is-at-top {
 // Dropdown button styling.
 .dropbutton-wrapper {
   // Sub-themes will have to override this color, unfortunately.
-  background-color: #008CBA;
+  background-color: #008cba;
   margin: 0 0 1.25rem;
 
   .button {
@@ -83,6 +82,10 @@ body.toolbar-fixed .sticky.is-stuck.is-at-top {
 ul.menu {
   margin: 0;
   padding: 0;
+
+  a.is-active {
+    color: inherit;
+  }
 }
 
 .menu-item {
