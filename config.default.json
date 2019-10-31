@@ -12,9 +12,9 @@
   "js": {
     "paths": {
       "src": ["./js/**/*.js"]
-    },
-    "eslint": {}
+    }
   },
+  "eslint": {},
   "sassGlob": {},
   "sassLint": {
     "files": {
