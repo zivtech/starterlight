@@ -93,7 +93,7 @@
     'attributes': field_label.attributes ?: {},
   },
   "items": {
-    'element': field_items.element ?: 'div',
+    'element': field_items.element is defined ? field_items.element : 'div',
     'classes': field_items.classes ?: ['field__items'],
     'attributes': field_items.attributes ?: {},
   },
@@ -141,7 +141,7 @@
   {% endif %}
 
   {% block content %}
-  {% if multiple %}
+  {% if multiple and config.items.element is not null %}
     <{{ config.items.element }}{{ items_attributes }}>
   {% endif %}
 
@@ -155,7 +155,7 @@
     {% endif %}
   {% endfor %}
 
-  {% if multiple %}
+  {% if multiple and config.items.element is not null %}
     </{{ config.items.element }}>
   {% endif %}
   {% endblock %}
