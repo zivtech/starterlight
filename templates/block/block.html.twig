@@ -121,15 +121,15 @@
 {% if content %}
   <{{ config.wrapper.element }}{{ attributes }}>
 
+  {{ title_prefix }}
   {% if configuration.label_display %}
-    {{ title_prefix }}
     <{{ config.label.element }}{{ title_attributes }}>
       {% block label %}
         {{ configuration.label }}
       {% endblock %}
     </{{ config.label.element }}>
-    {{ title_suffix }}
   {% endif %}
+  {{ title_suffix }}
 
   {% if config.content.element %}
     <{{ config.content.element }}{{ content_attributes }}>
