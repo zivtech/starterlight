@@ -4,8 +4,10 @@
  * Functions to support theming in the starterlight theme.
  */
 
+use Drupal\Component\Utility\Html;
+
 /**
- * Implements hook_preprocess_html().
+ * Implements template_preprocess_html().
  */
 function starterlight_preprocess_html(&$variables, $hook) {
   // Add variables and paths needed for HTML5 and responsive support.
@@ -30,6 +32,40 @@ function starterlight_preprocess_html(&$variables, $hook) {
   }
   else {
     $variables['attributes']['class'][] = 'layout-no-sidebars';
+  }
+}
+
+/**
+ * Implements template_preprocess_block().
+ */
+function starterlight_preprocess_block(&$vars) {
+  $provider = $vars['configuration']['provider'];
+  $plugin_id = $vars['plugin_id'];
+  $classes = [
+    'block',
+    'block-' . $provider,
+    'block-' . $plugin_id,
+  ];
+  foreach($classes as $class) {
+    $vars['attributes']['class'][] = Html::cleanCssIdentifier($class);
+  }
+
+  $title_classes = [
+    'block__label',
+    'block-' . $provider . '__title',
+    'block-' . $plugin_id . '__title',
+  ];
+  foreach($title_classes as $class) {
+    $vars['title_attributes']['class'][] = Html::cleanCssIdentifier($class);
+  }
+
+  $content_classes = [
+    'block__content',
+    'block-' . $provider . '__content',
+    'block-' . $plugin_id . '__content',
+  ];
+  foreach($content_classes as $class) {
+    $vars['content_attributes']['class'][] = Html::cleanCssIdentifier($class);
   }
 }
 

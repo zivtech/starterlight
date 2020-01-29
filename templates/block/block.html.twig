@@ -44,29 +44,17 @@
 {% set config = {
   'wrapper': {
     'element': block_wrapper.element ?: 'div',
-    'classes': (block_wrapper.classes ?: [])|merge([
-      'block',
-      'block-' ~ configuration.provider|clean_class,
-      'block-' ~ plugin_id|clean_class,
-    ]),
+    'classes': block_wrapper.classes ?: [],
     'attributes': block_wrapper.attributes ?: {},
   },
   'label': {
     'element': block_label.element ?: 'h2',
-    'classes': (block_label.classes ?: [])|merge([
-      'block__title',
-      'block-' ~ configuration.provider|clean_class ~ '__title',
-      'block-' ~ plugin_id|clean_class ~ '__title',
-    ]),
+    'classes': block_label.classes ?: [],
     'attributes': block_label.attributes ?: {},
   },
   'content': {
     'element': block_content.element,
-    'classes': (block_content.classes ?: [])|merge([
-      'block__content',
-      'block-' ~ configuration.provider|clean_class ~ '__content',
-      'block-' ~ plugin_id|clean_class ~ '__content',
-    ]),
+    'classes': block_content.classes ?: [],
     'attributes': block_content.attributes ?: {},
   },
 } %}
@@ -90,6 +78,8 @@
  *   - id: A valid HTML ID and guaranteed unique.
  * - title_attributes: Same as attributes, except applied to the main title
  *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the content tag
+ *   that appears in the template.
  * - title_prefix: Additional output populated by modules, intended to be
  *   displayed in front of the main title tag that appears in the template.
  * - title_suffix: Additional output populated by modules, intended to be
@@ -110,7 +100,6 @@
 {% endfor %}
 {% set title_attributes = title_attributes.addClass(config.label.classes) %}
 
-{% set content_attributes = create_attribute() %}
 {% for key, value in config.content.attributes %}
   {% set content_attributes = content_attributes.setAttribute(key, value) %}
 {% endfor %}
