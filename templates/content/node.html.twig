@@ -135,40 +135,24 @@
   set config = {
     'wrapper': {
       'element': node_wrapper.element ?: 'article',
-      'classes': (node_wrapper.classes ?: [])|merge([
-        'node',
-        'node--type-' ~ node.bundle|clean_class,
-        node.isPromoted() ? 'node--promoted',
-        node.isSticky() ? 'node--sticky',
-        not node.isPublished() ? 'node--unpublished',
-        view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-      ]),
+      'classes': node_wrapper.classes ?: [],
       'attributes': node_wrapper.attributes ?: {},
     },
     'label': {
       'element': node_label.element ?: 'h2',
       'display': node_label.display is defined ? node_label.display : not page,
       'link': node_label.link is defined ? node_label.link : true,
-      'classes': (node_label.classes ?: [])|merge([
-        'node__title',
-        'node--type-' ~ node.bundle|clean_class ~ '__title',
-      ]),
+      'classes': node_label.classes ?: [],
       'attributes': node_label.attributes ?: {},
     },
     'author': {
       'element': node_author.element ?: 'footer',
-      'classes': (node_author.classes ?: [])|merge([
-        'node__author-info',
-        'node--type-' ~ node.bundle|clean_class ~ '__author-info',
-      ]),
+      'classes': node_author.classes ?: [],
       'attributes': node_author.attributes ?: {},
     },
     'content': {
       'element': node_content.element ?: 'div',
-      'classes': (node_content.classes ?: [])|merge([
-        'node__content',
-        'node--type-' ~ node.bundle|clean_class ~ '__content'
-      ]),
+      'classes': node_content.classes ?: [],
       'attributes': node_content.attributes ?: {},
     },
   }

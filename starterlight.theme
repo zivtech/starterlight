@@ -69,6 +69,47 @@ function starterlight_preprocess_block(&$vars) {
   }
 }
 
+/**
+ * Implements template_preprocess_node().
+ */
+function starterlight_preprocess_node(&$vars) {
+  $view_mode = $vars['elements']['#view_mode'];
+  $node = $vars['elements']['#node'];
+  $bundle = $node->bundle();
+
+  $attributes = [
+    'attributes' => [
+      'node',
+      'node--type-' . $bundle,
+      'node--view-mode-' . $view_mode,
+      $node->isPromoted() ? 'node--promoted' : '',
+      $node->isSticky() ? 'node--sticky' : '',
+      !$node->isPublished() ? 'node--unpublished' : '',
+    ],
+    'title_attributes' => [
+      'node__title',
+      'node--type-' . $bundle . '__title',
+    ],
+    'content_attributes' => [
+      'node__content',
+      'node--type-' . $bundle . '__content',
+    ],
+  ];
+  foreach($attributes as $attribute => $classlist) {
+    foreach($classlist as $class) {
+      $vars[$attribute]['class'][] = Html::cleanCssIdentifier($class);
+    }
+  }
+
+  $author_classes = [
+    'node__author',
+    'node--type-' . $bundle . '__author',
+  ];
+  foreach($author_classes as $class) {
+    $vars['author_attributes']->addClass(Html::cleanCssIdentifier($class));
+  }
+}
+
 function starterlight_theme_suggestions_form_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form__' . $variables['element']['#form_id'];
 }
