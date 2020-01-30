@@ -61,14 +61,12 @@ select {
 }
 
 .form-item {
-
   label {
     display: block;
     margin-bottom: $sp1;
   }
 
   &.form-type-radio {
-
     label {
       display: inline;
     }
@@ -76,14 +74,12 @@ select {
 
   // All select elements use the label as the first item/option, this is duplicate.
   &.form-type-select {
-
     label {
       @include screen-reader-text;
     }
   }
 
   &.form-item-date {
-
     input[type='text'].hasDatepicker {
       width: calc(100% - 35px);
       margin-right: $sp1;
