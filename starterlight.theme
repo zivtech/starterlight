@@ -41,32 +41,25 @@ function starterlight_preprocess_html(&$variables, $hook) {
 function starterlight_preprocess_block(&$vars) {
   $provider = $vars['configuration']['provider'];
   $plugin_id = $vars['plugin_id'];
-  $classes = [
-    'block',
-    'block-' . $provider,
-    'block-' . $plugin_id,
-  ];
-  foreach($classes as $class) {
-    $vars['attributes']['class'][] = Html::cleanCssIdentifier($class);
-  }
 
-  $title_classes = [
-    'block__label',
-    'block-' . $provider . '__title',
-    'block-' . $plugin_id . '__title',
+  $attributes = [
+    'attributes' => [
+      'block',
+      'block-' . $provider,
+      'block-' . $plugin_id,
+    ],
+    'title_attributes' => [
+      'block__label',
+      'block-' . $provider . '__title',
+      'block-' . $plugin_id . '__title',
+    ],
+    'content_attributes' => [
+      'block__content',
+      'block-' . $provider . '__content',
+      'block-' . $plugin_id . '__content',
+    ],
   ];
-  foreach($title_classes as $class) {
-    $vars['title_attributes']['class'][] = Html::cleanCssIdentifier($class);
-  }
-
-  $content_classes = [
-    'block__content',
-    'block-' . $provider . '__content',
-    'block-' . $plugin_id . '__content',
-  ];
-  foreach($content_classes as $class) {
-    $vars['content_attributes']['class'][] = Html::cleanCssIdentifier($class);
-  }
+  starterlight_add_classes($attributes, $vars);
 }
 
 /**
@@ -95,11 +88,7 @@ function starterlight_preprocess_node(&$vars) {
       'node--type-' . $bundle . '__content',
     ],
   ];
-  foreach($attributes as $attribute => $classlist) {
-    foreach($classlist as $class) {
-      $vars[$attribute]['class'][] = Html::cleanCssIdentifier($class);
-    }
-  }
+  starterlight_add_classes($attributes, $vars);
 
   $author_classes = [
     'node__author',
@@ -110,6 +99,26 @@ function starterlight_preprocess_node(&$vars) {
   }
 }
 
+/**
+ * Implements hook_suggestions_HOOK_alter.
+ */
 function starterlight_theme_suggestions_form_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form__' . $variables['element']['#form_id'];
+}
+
+/**
+ * Apply lists of classes to their appropriate attribute arrays.
+ *
+ * @param array $attributes
+ *  An associative array full of arrays keyed by attribute names. The arrays
+ *  should contain a list of classes.
+ * @param array $vars
+ *  An array of variables as passed by template_preprocess_HOOK functions.
+ */
+function starterlight_add_classes($attributes, &$vars) {
+  foreach($attributes as $attribute => $classlist) {
+    foreach($classlist as $class) {
+      $vars[$attribute]['class'][] = Html::cleanCssIdentifier($class);
+    }
+  }
 }
