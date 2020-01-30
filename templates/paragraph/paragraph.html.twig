@@ -73,12 +73,7 @@
 {# Set defaults and stage additions and overrides #}
 {% set config = {
   'element': paragraph_wrapper.element ?: 'div',
-  'classes': (paragraph_wrapper.classes ?: [])|merge([
-    'paragraph',
-    'paragraph--type--' ~ paragraph.bundle|clean_class,
-    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-    not paragraph.isPublished() ? 'paragraph--unpublished',
-  ]),
+  'classes': paragraph_wrapper.classes ?: [],
   'attributes': paragraph_wrapper.attributes ?: {},
 } %}
 
