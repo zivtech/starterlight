@@ -1,7 +1,6 @@
+<div class="page-container">
 
-<div class="layout-container">
-
-  <header class="layout-header" role="banner">
+  <header class="header" role="banner">
     {{ page.header }}
   </header>
 
@@ -14,18 +13,18 @@
   <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
   <main class="main" role="main">
 
-    <div class="layout-content">
+    <div class="main__content">
       {{ page.content }}
-    </div>{# /.layout-content #}
+    </div>
 
     {% if page.sidebar_first %}
-      <aside class="layout-sidebar-first" role="complementary">
+      <aside class="main__sidebar-first" role="complementary">
         {{ page.sidebar_first }}
       </aside>
     {% endif %}
 
     {% if page.sidebar_second %}
-      <aside class="layout-sidebar-second" role="complementary">
+      <aside class="main__sidebar-second" role="complementary">
         {{ page.sidebar_second }}
       </aside>
     {% endif %}
@@ -33,9 +32,9 @@
   </main>
 
   {% if page.footer %}
-    <footer class="layout-footer" role="contentinfo">
+    <footer class="footer" role="contentinfo">
       {{ page.footer }}
     </footer>
   {% endif %}
 
-</div>{# /.layout-container #}
+</div>
