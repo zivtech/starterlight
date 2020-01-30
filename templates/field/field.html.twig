@@ -76,20 +76,12 @@
 {% set config = {
   "wrapper": {
     'element': field_wrapper.element ?: 'div',
-    'classes': (field_wrapper.classes ?: [])|merge([
-      'field',
-      'field--name-' ~ field_name|clean_class,
-      'field--type-' ~ field_type|clean_class,
-      'field--label-' ~ label_display
-    ]),
+    'classes': field_wrapper.classes ?: [],
     'attributes': field_wrapper.attributes ?: {},
   },
   "label": {
     'element': field_label.element ?: 'h3',
-    'classes': (field_label.classes ?: [])|merge([
-      'field__label',
-      label_display == 'visually_hidden' ? 'visually-hidden',
-    ]),
+    'classes': field_label.classes ?: [],
     'attributes': field_label.attributes ?: {},
   },
   "items": {
