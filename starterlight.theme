@@ -4,8 +4,10 @@
  * Functions to support theming in the starterlight theme.
  */
 
+use Drupal\Component\Utility\Html;
+
 /**
- * Implements hook_preprocess_html().
+ * Implements template_preprocess_html().
  */
 function starterlight_preprocess_html(&$variables, $hook) {
   // Add variables and paths needed for HTML5 and responsive support.
@@ -33,6 +35,141 @@ function starterlight_preprocess_html(&$variables, $hook) {
   }
 }
 
+/**
+ * Implements template_preprocess_block().
+ */
+function starterlight_preprocess_block(&$vars) {
+  $provider = $vars['configuration']['provider'];
+  $plugin_id = $vars['plugin_id'];
+
+  $attributes = [
+    'attributes' => [
+      'block',
+      'block-' . $provider,
+      'block-' . $plugin_id,
+    ],
+    'title_attributes' => [
+      'block__label',
+      'block-' . $provider . '__title',
+      'block-' . $plugin_id . '__title',
+    ],
+    'content_attributes' => [
+      'block__content',
+      'block-' . $provider . '__content',
+      'block-' . $plugin_id . '__content',
+    ],
+  ];
+  starterlight_add_classes($attributes, $vars);
+}
+
+/**
+ * Implements template_preprocess_node().
+ */
+function starterlight_preprocess_node(&$vars) {
+  $view_mode = $vars['elements']['#view_mode'];
+  $node = $vars['elements']['#node'];
+  $bundle = $node->bundle();
+
+  $attributes = [
+    'attributes' => [
+      'node',
+      'node--type-' . $bundle,
+      'node--view-mode-' . $view_mode,
+      $node->isPromoted() ? 'node--promoted' : '',
+      $node->isSticky() ? 'node--sticky' : '',
+      !$node->isPublished() ? 'node--unpublished' : '',
+    ],
+    'title_attributes' => [
+      'node__title',
+      'node--type-' . $bundle . '__title',
+    ],
+    'content_attributes' => [
+      'node__content',
+      'node--type-' . $bundle . '__content',
+    ],
+  ];
+  starterlight_add_classes($attributes, $vars);
+
+  $author_classes = [
+    'node__author',
+    'node--type-' . $bundle . '__author',
+  ];
+  foreach($author_classes as $class) {
+    $vars['author_attributes']->addClass(Html::cleanCssIdentifier($class));
+  }
+}
+
+/**
+ * Implements template_preprocess_field().
+ */
+function starterlight_preprocess_field(&$vars) {
+  $attributes = [
+    'attributes' => [
+      'field',
+      'field--name-' . $vars['field_name'],
+      'field--type-' . $vars['field_type'],
+      'field--label-' . $vars['label_display'],
+    ],
+    'title_attributes' => [
+      'field__label',
+      'field--name-' . $vars['field_name'] . '__label',
+      $vars['label_display'] === 'visually_hidden' ? 'visually-hidden' : '',
+    ],
+  ];
+  starterlight_add_classes($attributes, $vars);
+}
+
+/**
+ * Implements template_preprocess_region().
+ */
+function starterlight_preprocess_region(&$vars) {
+  $attributes = [
+    'attributes' => [
+      'region',
+      'region-' . $vars['region'],
+    ],
+  ];
+  starterlight_add_classes($attributes, $vars);
+}
+
+/**
+ * Implements template_preprocess_paragraph().
+ */
+function starterlight_preprocess_paragraph(&$vars) {
+  $paragraph = $vars['elements']['#paragraph'];
+  $view_mode = $vars['elements']['#view_mode'];
+
+  $attributes = [
+    'attributes' => [
+      'paragraph',
+      'paragraph--type--' . $paragraph->bundle(),
+      'paragraph--view-mode--' . $view_mode,
+      !$paragraph->isPublished() ? 'paragraph--unpublished' : '',
+    ],
+  ];
+  starterlight_add_classes($attributes, $vars);
+}
+
+/**
+ * Implements hook_suggestions_HOOK_alter.
+ */
 function starterlight_theme_suggestions_form_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form__' . $variables['element']['#form_id'];
+}
+
+/**
+ * Apply lists of classes to their appropriate attribute arrays.
+ *
+ * @param array $attributes
+ *  An associative array full of arrays keyed by attribute names. The arrays
+ *  should contain a list of classes.
+ * @param array $vars
+ *  An array of variables as passed by template_preprocess_HOOK functions.
+ */
+function starterlight_add_classes($attributes, &$vars) {
+  foreach($attributes as $attribute => $classlist) {
+    foreach($classlist as $class) {
+      $vars[$attribute]['class'][] = Html::cleanCssIdentifier($class);
+    }
+  }
 }

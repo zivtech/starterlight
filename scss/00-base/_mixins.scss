@@ -7,8 +7,6 @@
   }
 }
 
-
-
 @mixin pseudo-bg($transparent: .5) {
   position: relative;
   z-index: -1;
@@ -29,6 +27,7 @@
 @mixin transition-all {
   transition: all 0.4s ease;
 }
+
 // Use $pos: absolute when you just want to visually hide text.
 // Sometimes when dealing with icons, other positioning is required
 @mixin screen-reader-text($pos: absolute) {
@@ -54,7 +53,7 @@
 // Background Image
 $image-path: '../images' !default;
 @mixin background-image($name, $size: false) {
-  background-image: url(#{$image-path}/#{$name});
+  background-image: url(#{$image-path}/#{$name}); //sass-lint:disable-line url-quotes
   background-repeat: no-repeat;
   background-position: center center;
   @if($size) {
