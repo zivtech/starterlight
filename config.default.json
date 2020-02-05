@@ -59,7 +59,7 @@
       "autoprefixer": {},
       "features": {}
     },
-    "mqpacker": {},
+    "postcssSortMediaQueries": {},
     "cssnano": {
       "preset": [
         "default",
