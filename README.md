@@ -1,10 +1,14 @@
 # Starterlight
 
-A starter theme for Drupal 8 projects.
-
 - [Configuration](#configuration)
    - [Options](#options)
    - [Local configuration overrides](#local-configuration-overrides)
+
+## What it is
+Starterlight is a starting point for a new Drupal 8 theme. Once you download a copy of it into your `theme` directory, it is your code. Customize whatever you like!
+
+## What is is not
+Starterlight is not a base theme! We do not support downstream updates, and we are not maintaining backwards compatibility for older versions of this theme.
 
 ## Configuration
 Theme configuration is in the `config.default.json` file. You will probably be happy with most of the defaults in this file, though you should absolutely tailor these options for each theme:
