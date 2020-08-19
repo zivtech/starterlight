@@ -7,7 +7,7 @@
 ## What it is
 Starterlight is a starting point for a new Drupal 8 theme. Once you download a copy of it into your `theme` directory, it is your code. Customize whatever you like!
 
-## What is is not
+## What it is not
 Starterlight is not a base theme! We do not support downstream updates, and we are not maintaining backwards compatibility for older versions of this theme.
 
 ## Configuration
